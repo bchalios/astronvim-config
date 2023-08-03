@@ -54,6 +54,29 @@ return {
       -- "pyright"
       "rust_analyzer",
     },
+    config = {
+      rust_analyzer = {
+        settings = {
+          ["rust-analyzer"] = {
+            diagnostics = { enable = true },
+            cargo = {
+              extraEnv = { CARGO_PROFILE_RUST_ANALYZER_INHERITS = 'dev' },
+              extraArgs = { "--profile", "rust-analyzer" },
+              features = "all",
+              check = "clippy",
+            },
+            check = {
+              command = "clippy",
+              features = "all"
+            },
+          }
+        }
+      }
+    },
+    -- special setup for languages
+    setup_handlers = {
+      rust_analyzer = function(_, opts) require("rust-tools").setup { server = opts } end
+    }
   },
 
   -- Configure require("lazy").setup() options
